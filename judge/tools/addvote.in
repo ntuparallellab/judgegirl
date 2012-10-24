@@ -1,0 +1,21 @@
+## Comments: begin with '#' character
+#  This is a file descripter for inserting problems
+#  and intented to be designed for easy generation
+#  from other ways.
+
+## Format:
+#    empty lines are skiped 
+#    heading/tailing spaces are trimed
+#    spaces between '=' are optional and will be eaten
+#    commands(insert, unset) are not case-sensitive
+
+## Syntax:
+#   <Col> = value   set/override attribute to value
+#   unset <Col>     unset a specific column
+#   insert          insert current setting into System
+
+      title = 'Second Midterm Poll'
+   deadline = '2010-11-23 14:00:00'
+description = 'Do you want to have second midterm?'
+    options = 'Yes:No'
+INSERT

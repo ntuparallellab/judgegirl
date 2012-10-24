@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Preparing..."
+AuthUserFile /dev/null
+#Require valid-user

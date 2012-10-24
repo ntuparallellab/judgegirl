@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "$0: Started at $(date)";
+
+#select name from volumes where name not in (
+cat <<EOF | ./jsql
+update volumes set available = 1 where name not in (
+		'test',
+		'2009hw');
+EOF
+
+#sed -i 's/\(\$QuizEnv\s*=\s*\)[0-9]\+/\10/' $HOME/public_html/judgegirl/config.php
+sed -i 's/\(\$ContestEnv\s*=\s*\)[0-9]\+/\10/' $HOME/public_html/judgegirl/config.php

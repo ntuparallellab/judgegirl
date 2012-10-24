@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "$0: Started at $(date)";
+##sed -i 's/\(\$QuizEnv\s*=\s*\)[0-9]\+/\11/' $HOME/public_html/judgegirl/config.php
+sed -i 's/\(\$ContestEnv\s*=\s*\)[0-9]\+/\11/' $HOME/public_html/judgegirl/config.php
+cat <<EOF | ./jsql
+
+update volumes set available = 0 ; 
+update volumes set available = 1 where name = 'test' ; 
+
+update problems set available = 1 where volume = 'test'; 
+
+EOF

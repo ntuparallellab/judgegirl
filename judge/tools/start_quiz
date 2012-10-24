@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo "$0: Started at $(date)";
+# uncomment out the following lines before execution
+volume=2011final
+chmod go+x $HOME/public_html/$volume
+chmod go+r $HOME/public_html/$volume/*
+cat <<EOF | sed "s/__VOLUME__/$volume/" | ./jsql
+
+update volumes set available = 0 ; 
+update volumes set available = 1 where name = '__VOLUME__' ; 
+
+update problems set available = 1 where volume = '__VOLUME__'; 
+
+EOF

@@ -1,0 +1,19 @@
+# This is a template config.pl listed with defaults option.
+# Working directory will be same as temporal test path.
+# Please copy this file to your test path and edit as you want.
+
+#$CheckCmd    = '';
+#$IncPaths    = '';
+$CompileCmd  = '($CC $IncPaths $source && $CC $IncPaths $source -DVERBOSE)';
+#$LinkLibs    = '-lm';
+#$ObjectList  = '$objects';
+#$LinkCmd     = '$LD $LinkLibs $objects';
+#$Timeout     = '10';	# Real time limit, in seconds
+#$TimeLimit   = '3';	# CPU limit, in seconds
+#$SpaceLimit  = '16384';	# Virtual Memory limit, in kilo-bytes
+#$OutputLimit = '2048';	# File size limit, in 512-byte blocks
+$PreTestCmd  = '/usr/bin/gcc-4.4 source.c `cat $test_path/$test_num.carg`' ;
+#$TestCmd     = './a.out < $test_in > $user_out';
+#$JudgeCmd    = '/usr/bin/diff -q -b -B $test_out $user_out';
+#$PostTestCmd = '';
+#$ScoreExpr   = '$point';

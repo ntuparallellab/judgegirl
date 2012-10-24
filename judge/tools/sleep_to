@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# H M S
+if [ -z "$1" -o -z "$2" -o -z "$3" ] ; then
+	echo "$0: <H> <M> <S>"
+	echo " sleep to H:M:S"
+	exit 1
+fi
+
+sec(){
+    echo "$(( (($1)*60+$2)*60+$3 ))"
+}
+
+a=$(sec $1 $2 $3)
+b=$(sec `date '+%H %M %S'`)
+
+sleep $((a-b))
+

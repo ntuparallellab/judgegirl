@@ -1,0 +1,116 @@
+
+
+HOW TO
+  Access mysql via web ui:
+        http://judgegirl.csie.org/phpmyadmin
+  Connect to a mysql command line client:
+        mysql -u USER -p DBNAME
+    please refer config.php for account information.
+
+
+INITIAL SETUP
+
+0. # mysql -u root -p
+   > create database [DBname] ; 
+   > grant all on [DBname].* to '[username]'@'%' identified by '[password]' ; 
+
+1. Set config.php currectly and modify $SystemRoot, $ConfigPath in JudgeBase.pm
+
+2. Set environment variable PERL5LIB, the follow default command in ~/.bashrc
+   should be OK since it contains JudgeBase.pm:
+        export PERL5LIB=$HOME/judge
+
+3. Issue the following command to create base SQL tables:
+        ./create_table.pl -u -l -p -v
+
+4. Start up the judge daemon:
+        cd $HOME/judge && ./run.sh
+   you can run multiple judge by issuing ./run.sh several times, process
+   number of 3 is suggested.
+
+
+CREATE PROBLEMS
+
+1. Create problem set by command:
+        ./create_table.pl '-tProblem Set Title' probset_type:probset_name
+
+        probset_type should be one of the following:
+            C
+            CPP
+            JAVA
+            PYTHON
+
+        One could further extend supporting by following proper APIs.
+        A study upon Judger/CPP.pm would be a good start.
+
+2. Enable problem set by the following SQL command:
+        update volume set available=1 where name='probset_name';
+
+3. Edit addprob.in correctly and add problem by command:
+
+        ./addprob.pl < addprob.in
+
+   if seems alright, use the following command for actual execution:
+
+        ./addprob.pl < addprob.in --no-test
+
+   more problems can be added by repeating this step.
+
+4. Set up your testpath for each problem
+
+    a. make corresponding directory
+    b. copy $HOME/problems/config.pl that directory if you need a special judge.
+    c. create 1.in, 1.out, ... 10.in, 10.out - the test cases and their answers
+          - max score is as how many test cases you've assigned
+    d. you may need to change the permission
+          $ cd <your problem path>
+          $ chgrp judgegirl *.in *.out; chmod g+r *.in *.out
+
+5. Signal judge daemon to re-load data on a new problem set created
+
+        $ killj -USR1
+
+
+SQL Quick Reference
+
+    Words begin with '$' are the ones you have to substitute
+    Be careful with single quotes(')
+
+        show tables ;
+
+        show columns from $Table_Name;
+
+        select * form $Table_Name;
+
+        select $column1, $column2, $column3 from $Table_Name \
+            where $column1 = '$string' and $column2 = $number ;
+
+        select user, number, trial, score from $Volume_Name ;
+
+        update $Table_Name set $column1 = '$new_string' \
+            where $column2 = $number ;
+
+        update $Table_Name set $column1 = null \
+            where $column2 < $number ;
+
+        update $Volume_Name set score = null where number = $number ;
+
+        delete from $Table_Name where $column1 = '$string';
+
+        drop table $Table_Name;
+
+        alter table problems alter file set default 'source.c' ;
+
+
+KNOWN ISSUE
+  Judge program hangs after dropping problem set table during its execution, a
+    restart would solve.
+    The following process procedure could avoid such crash:
+       a. > delete from volumes where name = '$table_name';
+       b. $ killj -USR1
+       c. > drop table $table_name;
+
+  There is an unresolved warning in function load_judgers in judge.pl:
+        Unquoted string "pl" may clash with future reserved word at (eval 16)
+        line 1.
+

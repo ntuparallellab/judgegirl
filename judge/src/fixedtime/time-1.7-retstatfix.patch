@@ -1,0 +1,54 @@
+--- time-1.7-1/time.c	2012-03-27 20:32:47.791122755 +0800
++++ time-1.7/time.c	2012-03-27 22:02:16.803425778 +0800
+@@ -307,6 +307,7 @@
+    t == average resident set size in K (ru_idrss)
+ *  w == voluntary context switches (ru_nvcsw)
+    x == exit status of command
++   y == wait status of a forked command
+ 
+    Various memory usages are found by converting from page-seconds
+    to kbytes by multiplying by the page size, dividing by 1024,
+@@ -328,7 +329,7 @@
+   unsigned long v;		/* Elapsed virtual (CPU) milliseconds.  */
+   unsigned long ru;		/* Elapsed real microseconds.  */
+   unsigned long vu;		/* Elapsed virtual (CPU) microseconds.  */
+-
++/* Disable all unexpected string, but allows wait status
+   if (WIFSTOPPED (resp->waitstatus))
+     fprintf (fp, "Command stopped by signal %d\n",
+ 	     WSTOPSIG (resp->waitstatus));
+@@ -338,7 +339,7 @@
+   else if (WIFEXITED (resp->waitstatus) && WEXITSTATUS (resp->waitstatus))
+     fprintf (fp, "Command exited with non-zero status %d\n",
+ 	     WEXITSTATUS (resp->waitstatus));
+-
++*/
+   /* Convert all times to milliseconds.  Occasionally, one of these values
+      comes out as zero.  Dividing by zero causes problems, so we first
+      check the time value.  If it is zero, then we take `evasive action'
+@@ -480,6 +481,9 @@
+ 	    case 'x':		/* Exit status.  */
+ 	      fprintf (fp, "%d", WEXITSTATUS (resp->waitstatus));
+ 	      break;
++	    case 'y':		/* Wait status.  */
++	      fprintf (fp, "%d", (resp->waitstatus));
++	      break;
+ 	    case '\0':
+ 	      putc ('?', fp);
+ 	      return;
+@@ -660,12 +664,15 @@
+   summarize (outfp, output_format, command_line, &res);
+   fflush (outfp);
+ 
++/*
+   if (WIFSTOPPED (res.waitstatus))
+     exit (WSTOPSIG (res.waitstatus));
+   else if (WIFSIGNALED (res.waitstatus))
+     exit (WTERMSIG (res.waitstatus));
+   else if (WIFEXITED (res.waitstatus))
+     exit (WEXITSTATUS (res.waitstatus));
++*/
++  exit(0);
+ }
+ 
+ static void

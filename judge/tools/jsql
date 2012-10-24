@@ -1,0 +1,8 @@
+#!/bin/bash
+
+CONF="$HOME/public_html/judgegirl/config.php"
+user="$(cat $CONF |  grep MySQLuser | cut -d\" -f 2)"
+pass="$(cat $CONF |  grep MySQLpass | cut -d\" -f 2)"
+db="$(cat $CONF |  grep MySQLdatabase | cut -d\" -f 2)"
+
+mysql -u "$user" "-p$pass" "$db"

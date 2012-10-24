@@ -1,0 +1,48 @@
+install sudo, apache2, php5, mysql
+
+sudoer (# EIDTOR=vim visudo)
+
+    User_Alias JUDGE_COURSE = <course name1>, <course name2> ...
+    JUDGE_COURSE ALL = (judgegirl) NOPASSWD: ALL
+
+apache2 (/etc/conf.d/apache2)
+
+    APACHE2_OPTS="... -D USERDIR -D PHP5"
+
+php (/etc/php/apache2-php5*/php.ini)
+
+    ; allow <? ... ?> notation
+    short_open_tag = On
+    ; supress Notice error messages
+    errror_reporting = E_ALL & ~E_NOTICE
+
+mysql
+
+    # 1. new intall
+    emerge --config =dev-db/mysql-<version number>
+    # 2. in /etc/mysql/my.cnf
+    bind-address = <public IP>
+    # 3. remove empty user in table `user' in database `mysql'
+
+Sandbox Account
+
+    # groupadd juser 
+    # useradd -s /sbin/nologin -U -M judgegirl
+
+Add Course
+
+    # useradd -m -g juser -G judgegirl <course name>
+    # mysql -u root -p
+    > create database <DBName>
+    > grant all on <DBName>.* to '<UserName>' identified by '<Password>';
+    # su - <course name>
+    $ cd 
+    $ chgrp -R judgegirl problems judge/{bin,logs,Judger,JudgeBase.pm,judge.pl,judgexec,safe_func_list}
+    $ chmod g+w judge/logs
+
+If you are in SELinux-enabled system:
+    $ cd
+    $ chcon -R -t httpd_sys_content_t public_html
+You may also have to:
+    $ cd
+    $ chmod o+x . 

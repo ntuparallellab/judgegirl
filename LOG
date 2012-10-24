@@ -1,0 +1,46 @@
+CHANGE LOG
+
+2010-9-8:
+  Python tool set is dropped for less compatibility with loading config.php,
+    updates should have all applied into perl version.
+  Change behavior of run.sh, adduser, addprob, and create_table, please refer to
+    program itself and addprob.in.
+  Creating problem set table via create_table.pl now should be automatically
+    added in table volume (currently hard-coded added to table 'volume').
+  JudgeGirl should now be able to judge new problem sets after signaled by
+    SIGUSR1.
+
+2010-9-9:
+  Multi judge now available, just run ./run.sh several times
+  Change signal handler from SIGINT to SIGTERM since we usually use 'kill' to
+    signal judger's.
+
+2010-9-21:
+  This tool set has be modified into a more modular control, configuration
+  file load and judge database connection should now be handled by module
+  JudgeBase.
+
+2011-2-9:
+  File structure reorganized.
+
+2011-7-14:
+  System re-factored, now it supports multiple language compilation, on
+    one-language-per-volume basis.
+  Pluggable multiple language compilation module interfaces
+  Interfaces recording execution time and space
+  Re-designed judge mechanism, improving host security
+  Judger for C, CPP
+  Cleanups in judge.pl
+
+2011-7-15:
+  Judger for JAVA
+  Configuration further centralized to config.php
+
+2012-2-25:
+  Judger for PYTHON
+  Instructor information of footnote.php now moves to config.php
+  Fix documentation bugs in README*, create_table.pl, adduser.pl
+  Makefile for binary executables
+  Installation script for environment and path setting
+  Script for setting up MySQL
+  PHP short open tags cleanup

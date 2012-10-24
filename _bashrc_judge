@@ -1,0 +1,55 @@
+function color_prompt
+{
+	local CYAN="\[\e[36m\]"
+	local B_RED="\[\e[1;31m\]"
+	local B_YELLOW="\[\e[1;33m\]"
+	local B_PURPLE="\[\e[1;35m\]"
+	local B_CYAN="\[\e[1;36m\]"
+	local NORMAL="\[\e[m\]"
+	local B_GREEN="\[\e[1;32m\]"
+	local B_BLUE="\[\e[1;34m\]"
+
+	local JAILED=""
+	PS1="\n${B_PURPLE}\u@\h${NORMAL}${JAILED}[${B_GREEN}\w${NORMAL}] (${B_YELLOW}\A${NORMAL})\n\$ "
+	export PS1
+}
+color_prompt
+
+alias ls='ls -l --color --time-style=long-iso'
+alias grep='egrep --color'
+alias mv='mv -iv'
+alias rm='rm -i'
+alias less='less -r'
+alias cp='cp -iv'
+setterm -bfreq
+
+export PERL5LIB='__JROOT__'
+
+jsql() 
+{
+	local CONF='__JCONF__'
+  retstr=$( (
+              cat "$CONF" | sed '/?>/,//d;s/<?php//i'
+              echo -e 'print "$MySQLuser\\n$MySQLpass\\n$MySQLdatabase\\n";'
+            ) | perl )
+  user=$(echo "$retstr" | sed -n '1 p')
+  pass=$(echo "$retstr" | sed -n '2 p')
+    db=$(echo "$retstr" | sed -n '3 p')
+  #echo -e "User: $user\nPass: $pass\nDB:   $db\n"
+  if [ "$1" = "--dump" ] ;then
+    shift
+    mysqldump -u "$user" "-p$pass" "$db" "$@"
+  else
+    mysql -u "$user" "-p$pass" "$db" "$@"
+  fi
+}
+alias psj='ps uU judgegirl'
+psjpid(){
+	 psj | grep "\<$(whoami)\>" | sed 's/ \+/ /g' | cut -d\  -f 2
+}
+killj(){
+	sudo -u judgegirl kill "$@" `psjpid`
+}
+reloadj(){
+	killj -s SIGUSR1
+}
