@@ -17,5 +17,5 @@ Follow the instruction in judge/README
 
 Authors
 ------
-Programmer: 劉邦鋒, 上官林傑, 陳映睿, 王尹, 蕭俊宏, 鍾以千, 曹佐碩, 黃易, 李宗翰
+Programmer: 劉邦鋒, 上官林傑, 陳映睿, 王尹, 蕭俊宏, 鍾以千, 曹佐碩, 黃易, 李宗翰 
 Art Design: 施光祖
