@@ -10,20 +10,12 @@ HOW TO
 
 INITIAL SETUP
 
-0. # mysql -u root -p
-   > create database [DBname] ; 
-   > grant all on [DBname].* to '[username]'@'%' identified by '[password]' ; 
+1. Edit and execute install.pl
 
-1. Set config.php currectly and modify $SystemRoot, $ConfigPath in JudgeBase.pm
-
-2. Set environment variable PERL5LIB, the follow default command in ~/.bashrc
-   should be OK since it contains JudgeBase.pm:
-        export PERL5LIB=$HOME/judge
-
-3. Issue the following command to create base SQL tables:
+2. Issue the following command to create base SQL tables:
         ./create_table.pl -u -l -p -v
 
-4. Start up the judge daemon:
+3. Start up the judge daemon:
         cd $HOME/judge && ./run.sh
    you can run multiple judge by issuing ./run.sh several times, process
    number of 3 is suggested.

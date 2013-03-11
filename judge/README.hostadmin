@@ -32,13 +32,11 @@ Sandbox Account
 Add Course
 
     # useradd -m -g juser -G judgegirl <course name>
-    # mysql -u root -p
-    > create database <DBName>
-    > grant all on <DBName>.* to '<UserName>' identified by '<Password>';
     # su - <course name>
     $ cd 
-    $ chgrp -R judgegirl problems judge/{bin,logs,Judger,JudgeBase.pm,judge.pl,judgexec,safe_func_list}
-    $ chmod g+w judge/logs
+
+    download judgegirl, edit and execute install.pl
+    $ ./install.pl
 
 If you are in SELinux-enabled system:
     $ cd

@@ -56,7 +56,7 @@ $conf{'__TAMAILS'} = join(', ', @TaMail);
 
 ######
 #
-# Copy files
+# Copy files, set permissions
 #
 
 system('cp', '-av', 'judge', $conf{'__JROOT'});
@@ -64,6 +64,10 @@ system('cp', '-av', 'html', $conf{'__JHTML'});
 system('cp', '-av', '_bashrc_judge', $conf{'__JSHRC'});
 system('cp', '-av', 'src/_mysqlsetup.sh', 'mysqlsetup.sh');
 system('cp', '-av', 'conf', $conf{'__JPROB'});
+system('mkdir', $conf{'__JROOT'}.'/logs');
+system('chmod', 'g+w', $conf{'__JROOT'}.'/logs');
+system('chgrp -R judgegirl '. $conf{'__JPROB'});
+system('chgrp -R judgegirl '. $conf{'__JROOT'}.'/{bin,logs,Judger,JudgeBase.pm,judge.pl,judgexec,safe_func_list}');
 
 ######
 #
