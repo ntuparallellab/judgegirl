@@ -1,0 +1,20 @@
+#!/bin/bash
+
+## read file from stdin
+t=`mktemp`
+cat > "$t" ;
+
+for arg ; do
+	case "$arg" in
+	_div)   exp='[^/*]/[^/*]' ;;
+	_mod)  	exp="\\<%\\>"     ;;
+	*)   	exp="\\<$arg\\>"  ;;
+	esac
+	if grep -q "$exp" "$t"; then
+		rm "$t"
+		exit 1
+	fi
+done
+
+rm "$t"
+exit 0

@@ -1,0 +1,31 @@
+#!/usr/bin/perl
+
+undef $/ ;
+
+$template_file = $ARGV[0];
+shift;
+
+%h = ();
+@ary = ();
+foreach (@ARGV){
+	open SRC, "<$_";
+	$v = <SRC>;
+	$h{$_} = $v;
+	push @ary, $v;
+	close SRC;
+}
+
+open TPL, "<$template_file";
+$_ = <TPL>;
+# By file name:
+# /* INJECT file.c */ 
+foreach $src (keys %h){
+	s/\/\*\s*INJECT[\s_]+$src\s*\*\//$h{$src}/g;
+}
+# By argument:
+# /* INJECT FILE_1 */
+foreach $i ((1..scalar @ary)){
+	s/\/\*\s*INJECT[\s_]+FILE_$i\s*\*\//$ary[$i-1]/g;
+}
+
+print ;

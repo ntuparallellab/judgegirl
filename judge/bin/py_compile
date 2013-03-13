@@ -1,0 +1,9 @@
+#!/usr/bin/python2
+import sys
+import py_compile
+for f in sys.argv[1:]:
+    try:
+        py_compile.compile(f, f+'c', f, 1)
+    except:
+        raise
+        sys.exit(1)

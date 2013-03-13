@@ -1,0 +1,43 @@
+#!/usr/bin/perl
+
+undef $/ ;
+
+open A, "<$ARGV[0]" or die "open $ARGV[0]: $!";
+open B, "<$ARGV[1]" or die "open $ARGV[1]: $!";
+
+$error = (defined $ARGV[2])?$ARGV[2]:0.000003;
+
+@a = split /\s+/, <A>;
+@b = split /\s+/, <B>;
+
+if(scalar(@a) != scalar(@b)){
+	print STDERR "token numbers are different: ", scalar(@a), ", ", scalar(@b), "\n";
+	exit 1;
+}
+
+while(@a > 0 && @b > 0){
+	($u, $v) = (shift @a, shift @b);
+	if( $u =~ m/\d+(\.\d*)?/ ){
+		unless($v =~ m/\d+(\.\d*)?/){
+			print STDERR "type mismatch: '$u', '$v'\n";
+			exit 1;
+		}
+		if( $u =~ /\./ || $v =~ /\./ ){
+			unless(abs($u-$v) < $error){
+				print STDERR "real differs: |$u - $v| >= $error\n";
+				exit 1;
+			}
+		}elsif($u != $v){
+			print STDERR "integers are different: $u, $v\n";
+			exit 1;
+		}
+	}elsif($v =~ m/\d+(\.\d*)?/){
+		print STDERR "type mismatch: '$u', '$v'\n";
+		exit 1;
+	}elsif($u ne $v){
+		print STDERR "strings are different: '$u', '$v'\n";
+		exit 1;
+	}
+}
+die "unexpected error: remain count differs" if scalar(@a) != scalar(@b);
+exit 0;
