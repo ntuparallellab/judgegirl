@@ -15,7 +15,7 @@ if (($QuizEnv || $ContestEnv) && !$_SESSION["SU"]){
     if ($_SESSION["guest"])
         exit("Please submit later. There is a(n) exam/quiz now.");
     $conn_ip = getenv("REMOTE_ADDR");
-    if ($conn_ip != $ContestIP)
+    if (!in_array($conn_ip, $ContestIP))
         exit("Your IP address $conn_ip is not allowed to submit now.");
 }
 
@@ -205,22 +205,6 @@ function checkForm() {
     </td>
     <td>
       <img style="margin-top: 20px; margin-left: 20px;" src=images/new_logo_mid.jpg>
-    </td>
-  </tr>
-  <tr>
-    <td colspan=2>
-    <?php
-        include('simple_html_dom.php');
-        if(preg_match('/groups.google.com/', $url))
-            $problem_des = file_get_dom($url)->find('div#g_body') ;
-        if(preg_match('/sites.google.com/', $url))
-            $problem_des = file_get_dom($url)->find('div#sites-canvas-main') ;
-        if( $problem_des ){
-            echo "<h2>題目敘述</h2>";
-            echo "<font style='sans-serif'>".iconv("UTF-8", "BIG5//TRANSLIT", $problem_des[0]).'</font>';
-            echo "<hr>";
-        }
-    ?>
     </td>
   </tr>
 </table>
